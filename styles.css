@@ -1,0 +1,271 @@
+/* Reset some default browser styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #737386; /* Mauve-grey background */
+}
+
+/* Header Styling with Black Background */
+header {
+    width: 100%;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: center;
+    background-color: #000000; /* Black background */
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.logo-img {
+    height: 50px;
+    width: auto;
+}
+
+/* Enhanced Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 1rem;
+    position: relative;
+    transition: color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -3px;
+    left: 0;
+    background-color: #B5A5D6;
+    transition: width 0.3s;
+}
+
+.nav-links a:hover {
+    color: #B5A5D6;
+    transform: scale(1.1); /* Slight scale on hover */
+    box-shadow: 0px 4px 10px rgba(181, 165, 214, 0.5);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Hero Section with Overlay and Top-Right Text */
+.hero-image-section {
+    position: relative;
+    height: 500px;
+    background-color: #000;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.hero-image-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); /* Dark overlay */
+    z-index: 2;
+}
+
+/* Hero Title with Reveal Animation */
+.hero-title {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3;
+    color: #FFFFFF;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: revealText 2s ease forwards;
+}
+
+@keyframes revealText {
+    0% { max-width: 0; }
+    100% { max-width: 100%; }
+}
+
+/* Description Box with Scroll Animation */
+.description {
+    position: relative;
+    width: 80%;
+    margin: 2rem auto;
+    text-align: center;
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 250px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Soft shadow */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.description.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.description::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #515166 27%, #515166 31%, #8686A8 77%, #A2A2CC 100%);
+    z-index: -1;
+}
+
+.description-content {
+    padding: 3rem 2rem;
+    color: #FFFFFF;
+    position: relative;
+    z-index: 1;
+}
+
+.description h2 {
+    font-size: 2.5rem;
+    color: #FFFFFF;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* Feature Cards Section */
+.feature-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 2.5rem;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 1200px;
+    padding-bottom: 2rem;
+}
+
+/* Individual Feature Card with Animated Gradient and 3D Effect */
+.feature-card {
+    background: linear-gradient(135deg, #515166 27%, #515166 31%, #8686A8 77%, #A2A2CC 100%);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-position 0.5s;
+    background-size: 200% 200%;
+    background-position: 0 0;
+    position: relative;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: gradientShift 5s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 3D Pop-out effect on hover */
+.feature-card:hover {
+    transform: translateY(-5px) scale(1.05); /* Lift and slightly enlarge */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Ripple Effect on Feature Icons */
+.feature-icon {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin-bottom: 1rem;
+    transition: opacity 0.3s ease;
+}
+
+.feature-icon::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.feature-card:hover .feature-icon::after {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+}
+
+/* Feature Card Heading */
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+    font-weight: bold;
+}
+
+.feature-card:hover h3 {
+    color: #B5A5D6; /* Change color on hover */
+}
+
+/* Footer with Gradient Background */
+.footer {
+    background: linear-gradient(135deg, #515166, #737386);
+    color: #FFFFFF;
+    padding: 2rem 1rem;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.footer p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.social-links a {
+    color: #FFFFFF;
+    margin: 0 0.5rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: #B5A5D6;
+}
