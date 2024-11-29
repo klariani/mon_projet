@@ -3,7 +3,8 @@
             top: 0;       
             width: 100%;
 			padding:10px;
-			background-color: #000;
+	height: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
             display: flex; 
             align-items: center;  			
             z-index: 20; 
