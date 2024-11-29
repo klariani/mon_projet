@@ -24,7 +24,7 @@
 		<ul>
 			<li><a href="exploration.html">Exploration</a></li>
 			<li><a href="statistique.html">Statistique</a></li>
-			<li><a href="visualisation.html">Visualisation</a></li>
+			<li><a href="analyseChoix.php">Visualisation</a></li>
 			<li><a href="prediction.html">Prédiction</a></li>
 			<li><a href="login.php">Compte</a></li>
 		</ul>
