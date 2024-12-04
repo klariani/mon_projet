@@ -38,6 +38,35 @@ while ($row = $result->fetch_assoc()) {
     <title>Exploration</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<link rel="stylesheet" href="style1.css" type="text/css" media="screen" />
+	<style>
+		.var{color : black}
+
+        #texte {
+            text-align: center;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 800px;
+        }
+		
+        #texte p {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        #contenu {
+			color : black;
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+            position: relative;
+        }
+        #contenu canvas {
+            display: block;
+            margin: 0 auto;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -50,30 +79,29 @@ while ($row = $result->fetch_assoc()) {
 			<li><a href="login.php">Compte</a></li>
 		</ul>
 	</div>
-	<img src="./img/Capture d'écran 2024-10-26 081223.png">
-	
-	<div id="texte">
-		<p>Nuage de points</p>
-		<form method="POST">
-				<label for="varX">Variable X :</label>
-				<select name="varX" id="varX">
+	<img src="img/Capture d'écran 2024-10-26 081223.png">
+	<div id="contenu">
+		<div id="texte">
+			<p>Nuage de points</p>
+			<form method="POST">
+				<label class="var" for="varX">Variable X :</label>
+				<select name="varX">
 					<?php foreach ($columns as $column): ?>
 						<option value="<?= $column ?>"><?= $column ?></option>
 					<?php endforeach; ?>
 				</select>
 
-				<label for="varY">Variable Y :</label>
-				<select name="varY" id="varY">
+				<label class="var" for="varY">Variable Y :</label>
+				<select name="varY">
 					<?php foreach ($columns as $column): ?>
 						<option value="<?= $column ?>"><?= $column ?></option>
 					<?php endforeach; ?>
 				</select>
 
 				<button type="submit">Générer le graphique</button>
-		</form>
-	</div>
+			</form>
+		</div>
 	
-	<div id="contenu">
 		<?php
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$varX = $_POST['varX'];
@@ -91,7 +119,7 @@ while ($row = $result->fetch_assoc()) {
 			}
 		?>
 
-		<canvas id="scatterChart" width="200" height="150"></canvas>
+		<canvas id="scatterChart" width="800" height="400"></canvas>
 		<script>
 			const data = {
 				datasets: [{
@@ -132,4 +160,3 @@ while ($row = $result->fetch_assoc()) {
 
 </body>
 </html>
-
