@@ -1,37 +1,216 @@
-.navigation{
-	  position: fixed; 
-            top: 0;       
-            width: 100%;
-			padding:10px;
-	height: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-            display: flex; 
-            align-items: center;  			
-            z-index: 20; 
-			justify-content: center;
+h3 {
+  padding-left: 2%;
 }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background-color: #737386;
+  padding-top: 50px;
+}
+
+.navigation {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 10px;
+  height: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  z-index: 20;
+  justify-content: center;
+  background-color: black;
+  left: 0;
+}
+
 .navigation ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 1000;
-    display: flex;
-	left: 30%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  left: 30%;
+}
+
+.container h2, h2 {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: left;
+  padding-left: 20px;
+  line-height: 1.4;
+  font-family: 'Lato', sans-serif;
+}
+
+.navigation a:hover {
+  background: linear-gradient(90deg, #d4d4d4, #ffffff, #b0b0b0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #d4d4d4;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(200, 200, 200, 0.5);
+  transition: all 0.3s ease;
 }
 
 .navigation li {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .navigation a {
-    text-decoration: none;
-    color: white;  	
+  text-decoration: none;
+  color: white;
 }
-img{
-    height: auto;
-    max-width: 100%;
-	width: 44px;
-    height: 44px;
-	position : fixed ;
-	top:0;
-	z-index: 30; 
+
+img {
+  left: 0;
+  height: auto;
+  max-width: 100%;
+  width: 44px;
+  height: 44px;
+  position: fixed;
+  top: 0;
+  z-index: 30;
+}
+
+.container {
+  padding-top: 10px;
+  width: 75%;
+  height: auto;
+  margin: 100px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  text-indent: 15px;
+  padding-bottom: 10px;
+}
+
+button {
+  background-color: black;
+  border: none;
+  color: whitesmoke;
+  padding: 10px 30px;
+  font-size: 14px;
+  font-weight: lighter;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  height: 27px;
+  text-align: center;
+  line-height: 10px;
+  margin-right: 5%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 20px;
+  width: 100%;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button:focus {
+  outline: none;
+}
+
+.checkbox-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  right: 20%;
+}
+
+.checkbox-scroll {
+  max-height: 100px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  width: 200px;
+}
+
+.checkbox-label {
+  font-size: 14px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.checkbox-item {
+  margin-right: 10px;
+  cursor: pointer;
+  width: 12px;
+  height: 12px;
+  appearance: none;
+  border-radius: 50%;
+  border: 1px solid #868585;
+  background-color: #fff;
+  transition: background-color 0.3s ease, border 0.3s ease;
+}
+
+.checkbox-item:checked {
+  background-color: #777;
+  border-color: #444;
+}
+
+.checkbox-label:hover {
+  background: linear-gradient(90deg, #d4d4d4, #ffffff, #b0b0b0);
+}
+
+#analyseResultat, #analyseResultat2 {
+  margin-top: 4%;
+  top: 5%;
+  height: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  background-color: whitesmoke;
+  flex-direction: column;
+  border-radius: 20px;
+  text-indent: 15px;
+  padding-bottom: 10px;
+  display: flex;
+  
+}
+
+button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.tableau1, .tableau2{
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: 100%;
+  border: 1px solid #ddd;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+export {
+  background-color: rgb(103, 69, 69);
 }
