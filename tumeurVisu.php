@@ -13,18 +13,18 @@ $diagnostics = $query->fetchAll(PDO::FETCH_ASSOC);
 <html>
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Kaisei+HarunoUmi&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style1.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="./style/train.css" type="text/css" media="screen" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title> Visualisation </title>
 </head>
 <body>
     <div class="navigation">
         <ul>
-            <li><a href="exploration.html">Exploration</a></li>
-            <li><a href="statistique.html">Statistique</a></li>
-            <li><a href="visualisation.html">Visualisation</a></li>
+            <li><a href="exploration.php">Exploration</a></li>
+            <li><a href="analyseChoix.php">Statistique</a></li>
+            <li><a href="visualisation.php">Visualisation</a></li>
             <li><a href="prediction.html">Prédiction</a></li>
-            <li><a href="compte.html">Compte</a></li>
+            <li><a href="login.php">Compte</a></li>
         </ul>
     </div>
     <img src="./image/Capture d'écran 2024-10-26 081223.png">
@@ -54,6 +54,49 @@ $diagnostics = $query->fetchAll(PDO::FETCH_ASSOC);
     $requete->execute([$Id_tumeur]);
     $tumeur = $requete->fetch();
 	if ($tumeur) {?>
+	<?php
+
+// Définit le chemin du dossier temporaire
+$tempDir = __DIR__ . '/tmp';
+$tempFile = $tempDir . '/test.json';
+
+// Assure que le dossier existe
+if (!is_dir($tempDir)) {
+    mkdir($tempDir, 0777, true); // Crée le dossier avec les permissions nécessaires
+}
+
+// Données à écrire dans le fichier JSON
+$tumeurData = [
+    "rayon_moyen" => $tumeur['rayon_moyen'],
+    "perimetre_moyen" => $tumeur['perimetre_moyen'],
+    "uniformite_moyenne" => $tumeur['uniformite_moyenne'],
+    "concavite_moyenne" => $tumeur['concavite_moyenne'],
+    "symetrie_moyenne" => $tumeur['symetrie_moyenne'],
+	"dim_fractal_moyenne" => $tumeur['dim_fractal_moyenne']
+];
+
+
+// Écrit les données dans le fichier JSON
+if (file_put_contents($tempFile, json_encode($tumeurData, JSON_PRETTY_PRINT))) {
+    
+
+} else {
+    echo "Erreur lors de la création du fichier JSON.";
+	
+	
+}
+
+$htmlFile = "tmp/graph.html";
+
+$python = 'C:/Users/mayss/AppData/Local/Programs/Python/Python313/python.exe';
+$script = 'C:/MAMP/htdocs/GestionP/testvisu.py';
+
+// Exécuter la commande
+$command = "$python $script 2>&1";
+$output = shell_exec($command);
+?>
+ <iframe src="tmp/graph.html" width="65%"; height="700" style="border:none;"></iframe>
+
 
         <table>
             <tr>
@@ -73,7 +116,8 @@ $diagnostics = $query->fetchAll(PDO::FETCH_ASSOC);
                 <td><?php echo htmlspecialchars($tumeur['symetrie_moyenne']); ?></td>
                 <td><?php echo htmlspecialchars($tumeur['dim_fractal_moyenne']); ?></td>
 				
-            </tr> <?php 
+            </tr>
+</table>			<?php 
 			 } else {
         echo "Aucune tumeur trouvée avec cet ID.";
     }
@@ -82,5 +126,6 @@ $diagnostics = $query->fetchAll(PDO::FETCH_ASSOC);
 }?>
         </table>
     </div>
+
 </body>
 </html>
