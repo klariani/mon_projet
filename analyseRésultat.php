@@ -8,6 +8,7 @@
 </head>
 
 <body>
+<h2 id="h2bis">Analyse statistique dédiée aux caractéristiques des tumeurs</h2>
     <div id="analyseResultat">
         <?php
         session_start();
@@ -82,7 +83,7 @@
         $statsBenignes = calculerStatistiques($bdd, $caracteristiques, 1);#1 est le code pour tumeur benignes
         $statsMalignes = calculerStatistiques($bdd, $caracteristiques, 2);#2 est le code pour tumeur malignes
 
-        echo "<h2>Analyse statistique dédiée aux caractéristiques des tumeurs</h2>";
+        
         echo "<h3> ▶ Comparaison statistique des carctéristiques des tumeurs bénignes et malignes</h3>";
         echo "<div class='tableau1'>
         <table id='tableau' border='1'>
