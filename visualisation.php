@@ -4,7 +4,7 @@ require "./getBd.php";
 $bdd = getBD();
 session_start();
 
-$query = $bdd->prepare("SELECT tumeur.`Id-tumeur`, diagnostique.libelle_diagnostic FROM tumeur JOIN diagnostic ON tumeur.`Id-tumeur` = diagnostic.`Id-tumeur` JOIN diagnostique ON diagnostique.code_diagnostic = diagnostic.code_diagnostic;");
+ $query = $bdd->prepare("SELECT tumeur.`Id-tumeur`, diagnostic.libelle_diagnostic FROM tumeur, diagnostic WHERE tumeur.code_diagnostic = diagnostic.code_diagnostic");
 $query->execute();
 $diagnostics = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -16,6 +16,11 @@ $diagnostics = $query->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="./style/train.css" type="text/css" media="screen" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title> Visualisation </title>
+	 <script>
+        function submitForm() {
+            document.getElementById('autoSubmitForm').submit();
+        }
+    </script>
 </head>
 <body>
     <div class="navigation">
@@ -34,7 +39,7 @@ $diagnostics = $query->fetchAll(PDO::FETCH_ASSOC);
         <div class="menuData">
             <label for="data">Choisir data :</label>
             <select id="data" name="data">
-                <option value="moyenne">M</option>
+                <option value="moyenne" selected >M</option>
                 <option value="se">SD</option>
                 <option value="wrost">W</option>
             </select>
@@ -71,6 +76,18 @@ $diagnostics = $query->fetchAll(PDO::FETCH_ASSOC);
             </tr>
         </table>
     </div>
-	
+	<?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!empty($_POST['data'])) {
+            // Récupérer l'option sélectionnée
+            $selectedOption = $_POST['data'];
+
+            // Afficher l'option sélectionnée
+            echo "<p>Vous avez sélectionné : " . htmlspecialchars($selectedOption) . "</p>";
+        } else {
+            echo "<p>Aucune option n'a été sélectionnée.</p>";
+        }
+    }
+    ?>
 </body>
 </html>
