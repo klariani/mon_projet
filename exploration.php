@@ -14,14 +14,24 @@ if ($conn->connect_error) {
 
 $table_name = "tumeur";
 
+<<<<<<< HEAD
 $table_check = $conn->query("SHOW TABLES LIKE 'tumeur'");
 if ($table_check->num_rows == 0) {
     die("La table 'tumeur' n'existe pas dans la base de données.");
+=======
+$table_check = $conn->query("SHOW TABLES LIKE '$table_name'");
+if ($table_check->num_rows == 0) {
+    die("La table '$table_name' n'existe pas dans la base de données.");
+>>>>>>> 6dacdfd6d34808ed0c9f50e27043adfb9a4d05b2
 }
 
 // Récupérer les colonnes pour le menu déroulant
 $columns = [];
+<<<<<<< HEAD
 $result = $conn->query("SHOW COLUMNS FROM `tumeur`");
+=======
+$result = $conn->query("SHOW COLUMNS FROM `$table_name`");
+>>>>>>> 6dacdfd6d34808ed0c9f50e27043adfb9a4d05b2
 while ($row = $result->fetch_assoc()) {
     $columns[] = $row['Field'];
 }
@@ -34,6 +44,7 @@ while ($row = $result->fetch_assoc()) {
     <title>Exploration</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style1.css" type="text/css" media="screen" />
+<<<<<<< HEAD
     <link href="https://fonts.googleapis.com/css2?family=Kaisei+HarunoUmi&display=swap" rel="stylesheet">
 	
     <style>
@@ -47,6 +58,10 @@ while ($row = $result->fetch_assoc()) {
 	top:0;
 	z-index: 30; 
 }
+=======
+    <style>
+        .var { color: black; }
+>>>>>>> 6dacdfd6d34808ed0c9f50e27043adfb9a4d05b2
 
         #texte {
             text-align: center;
@@ -79,6 +94,7 @@ while ($row = $result->fetch_assoc()) {
     <div class="navigation">
         <ul>
             <li><a href="exploration.php">Exploration</a></li>
+<<<<<<< HEAD
             <li><a href="analyseChoix.php">Statistique</a></li>
             <li><a href="visualisation.php">Visualisation</a></li>
             <li><a href="prediction.html">Prédiction</a></li>
@@ -88,6 +104,15 @@ while ($row = $result->fetch_assoc()) {
     <a href="home.html">
     <img src="./image/Capture d'écran 2024-10-26 081223.png">
 </a>
+=======
+            <li><a href="statistique.html">Statistique</a></li>
+            <li><a href="analyseChoix.php">Visualisation</a></li>
+            <li><a href="prediction.php">Prédiction</a></li>
+            <li><a href="login.php">Compte</a></li>
+        </ul>
+    </div>
+    <img src="img/Capture d'écran 2024-10-26 081223.png">
+>>>>>>> 6dacdfd6d34808ed0c9f50e27043adfb9a4d05b2
     <div id="contenu">
         <div id="texte">
             <p>Nuage de points</p>
@@ -95,7 +120,10 @@ while ($row = $result->fetch_assoc()) {
                 <label class="var" for="varX">Variable X :</label>
                 <select name="varX">
                     <?php foreach ($columns as $column): ?>
+<<<<<<< HEAD
 					
+=======
+>>>>>>> 6dacdfd6d34808ed0c9f50e27043adfb9a4d05b2
                         <option value="<?= $column ?>"><?= $column ?></option>
                     <?php endforeach; ?>
                 </select>
@@ -110,7 +138,11 @@ while ($row = $result->fetch_assoc()) {
             // Récupérer les données avec les catégories B et M
             $dataB = [];
             $dataM = [];
+<<<<<<< HEAD
             $query = "SELECT `tumeur`.`$varX` AS variable_x, diagnostic.`libelle_diagnostic` AS type_diagnostic FROM diagnostic,`tumeur` WHERE  `tumeur`.`code_diagnostic` = diagnostic.`code_diagnostic`;";
+=======
+            $query = "SELECT `$table_name`.`$varX` AS variable_x, diagnostique.libelle_diagnostic AS type_diagnostic FROM `$table_name` JOIN diagnostic ON `$table_name`.`Id-tumeur` = diagnostic.`Id-tumeur` JOIN diagnostique ON diagnostique.code_diagnostic = diagnostic.code_diagnostic;";
+>>>>>>> 6dacdfd6d34808ed0c9f50e27043adfb9a4d05b2
 			$result = $conn->query($query);
 
 			if (!$result) {
