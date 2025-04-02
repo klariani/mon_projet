@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oncoanalyse - Homepage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="path-to-your-logo.png" alt="Logo Oncoanalyse" class="logo-img">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#exploration">Exploration</a></li>
+                <li><a href="#statistique">Statistique</a></li>
+                <li><a href="#visualisation">Visualisation</a></li>
+                <li><a href="#prediction">Prédiction</a></li>
+                <!-- Link to the login page for account management -->
+                <li><a href="login.php">Compte</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-image-section">
+        <img src="img01.png" alt="Oncoanalyse Background" class="hero-image">
+        <h1 class="hero-title">Oncoanalyse</h1>
+    </section>
+
+    <!-- Presentation Section -->
+    <section class="presentation">
+        <div class="description">
+            <div class="description-content">
+                <h2>Présentation</h2>
+                <p>
+                    Ce projet utilise les données des tumeurs du sein pour prédire leur nature (bénigne ou maligne).
+                    En exploitant des caractéristiques comme le rayon et la texture, il vise à améliorer le diagnostic
+                    et réduire les biopsies invasives grâce à des modèles prédictifs et des visualisations interactives.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Feature Cards Section -->
+    <section class="feature-cards">
+        <div class="feature-card">
+            <img src="stat.png" alt="Statistique" class="feature-icon">
+            <h3>Statistique</h3>
+        </div>
+        <div class="feature-card">
+            <img src="visualisation.png" alt="Visualisation" class="feature-icon">
+            <h3>Visualisation</h3>
+        </div>
+        <div class="feature-card">
+            <img src="prediction.png" alt="Prédiction" class="feature-icon">
+            <h3>Prédiction</h3>
+        </div>
+        <div class="feature-card">
+            <img src="exploration.png" alt="Exploration" class="feature-icon">
+            <h3>Exploration</h3>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Oncoanalyse - © 2024 Tous droits réservés</p>
+        <div class="social-links">
+            <a href="#">Facebook</a> | <a href="#">Twitter</a> | <a href="#">LinkedIn</a>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const presentation = document.querySelector('.description');
+            
+            const revealOnScroll = () => {
+                const sectionTop = presentation.getBoundingClientRect().top;
+                if (sectionTop < window.innerHeight) {
+                    presentation.classList.add('visible');
+                }
+            };
+        
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Initial check on load
+        });
+        </script>
+        
+        
+</body>
+</html>

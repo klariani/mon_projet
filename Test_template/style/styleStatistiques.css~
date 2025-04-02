@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+.navigation{
+	  position: fixed; 
+            top: 0;       
+            width: 100%;
+			padding:10px;
+	height: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+            display: flex; 
+            align-items: center;  			
+            z-index: 20; 
+			justify-content: center;
+			background-color: black;
+			left:0;
+}
+.navigation ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 1000;
+    display: flex;
+	left: 30%;
+}
+.navigation a:hover {
+    background: linear-gradient(90deg, #d4d4d4, #ffffff, #b0b0b0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #d4d4d4;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(200, 200, 200, 0.5);
+    transition: all 0.3s ease;
+}
+
+.navigation li {
+    margin-right: 20px;
+}
+
+.navigation a {
+    text-decoration: none;
+    color: white;  	
+}
+img{
+	left: 0;
+    height: auto;
+    max-width: 100%;
+	width: 44px;
+    height: 44px;
+	position : fixed ;
+	top:0;
+	z-index: 30; 
+}
+body{
+	background-color: #737386;
+}
+.container{
+	padding-top: 10px;
+ width: 75%;       /* Définir une largeur spécifique */
+    height: auto;      /* Définir une hauteur spécifique */
+    margin: 100px auto;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+background-color: whitesmoke;
+display: block;
+border-radius: 20px;
+text-indent: 15px;
+padding-bottom: 10px;
+}
+button {
+
+	 background-color: black;
+    border: none;  /* Supprime la bordure par défaut */
+color: whitesmoke;
+    padding: 15px 30px;  /* Espacement interne */
+    font-size: 12px;  /* Taille du texte */
+    font-weight:bolder;  /* Gras pour le texte */
+    text-transform: uppercase;  /* Met le texte en majuscules */
+    cursor: pointer;  /* Pointeur au survol */
+    border-radius: 30px;  /* Coins arrondis pour un effet moderne */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Ombre douce */
+    transition: all 0.3s ease-in-out;  /* Transition pour les effets interactifs */
+}
+
+button:hover {
+    transform: translateY(-3px);  /* Effet de survol - bouton remonte */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);  /* Ombre plus forte au survol */
+}
+
+button:active {
+    transform: translateY(2px);  /* Effet de clic - bouton descend */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);  /* Ombre légère lors du clic */
+}
+
+button:focus {
+    outline: none;  /* Enlève le contour de focus */
+}
