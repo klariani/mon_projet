@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualisation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    .scrollable-list {
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 0.5rem 1rem;
+      margin: 0 auto 2rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      max-width: 600px;
+    }
+    .actions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .actions-list a.button.small {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      background: #7f71c6;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    .actions-list a.button.small:hover {
+      background: #6e5bb8;
+    }
+    #search-input {
+      max-width: 600px;
+      margin: 1rem auto;
+      display: block;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body class="is-preload">
+  <div id="wrapper">
+    <header id="header" class="alt">
+      <h1>Oncoanalyse</h1>
+      <p>Visualisation des données d'une tumeur</p>
+    </header>
+
+    <nav id="nav">
+      <ul>
+        <li><a href="exploration.php">Exploration</a></li>
+        <li><a href="analyseChoix.php">Statistique</a></li>
+        <li><a href="visualisation.php" class="active">Visualisation</a></li>
+        <li><a href="prediction.php">Prédiction</a></li>
+        <li><a href="login.php">Compte</a></li>
+      </ul>
+    </nav>
+
+    <div id="main">
+      <section class="main special" id="visualisation">
+        <div class="inner">
+          <header class="major">
+            <h2>Visualisation d'une Tumeur</h2>
+            <p>Le projet <strong>Oncoanalyse</strong> s’appuie sur une base de données médicales regroupant les mesures de caractéristiques morphologiques de tumeurs du sein, telles que le rayon, la texture, la concavité ou encore la symétrie cellulaire. Ces données sont extraites d’images médicales et permettent de former des modèles statistiques et prédictifs capables d’assister les professionnels de santé.</p>
+            <p>À travers une interface intuitive, Oncoanalyse offre plusieurs fonctionnalités : analyse statistique, visualisation dynamique et prédiction automatique. L’objectif est d’améliorer la fiabilité du diagnostic précoce, de limiter le recours aux examens invasifs et de mieux guider les décisions cliniques. Ce projet illustre la complémentarité entre intelligence artificielle et expertise médicale pour répondre à un enjeu de santé publique majeur.</p>
+          </header>
+
+          
+
+          <script>
+            const searchInput = document.getElementById('search-input');
+            const idList = document.getElementById('id-list');
+            const links = idList.getElementsByTagName('a');
+
+            searchInput.addEventListener('input', function () {
+              const filter = this.value.toLowerCase();
+              for (let i = 0; i < links.length; i++) {
+                const txt = links[i].textContent.toLowerCase();
+                links[i].style.display = txt.includes(filter) ? 'block' : 'none';
+              }
+            });
+          </script>
+        </div>
+      </section>
+    </div>
+
+    <footer id="footer">
+      <p>&copy; Oncoanalyse. Tous droits réservés.</p>
+    </footer>
+  </div>
+</body>
+</html>
