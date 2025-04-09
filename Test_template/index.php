@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 $host = "localhost";
 $username = "root";
-$password = "";
+$password = "root";
 $dbname = "cancer";
 
 $conn = new mysqli($host, $username, $password, $dbname);
@@ -26,6 +26,17 @@ if ($table_check->num_rows == 0) {
 $columns = [];
 $resultCols = $conn->query("SHOW COLUMNS FROM tumeur");
 while ($row = $resultCols->fetch_assoc()) {
+    $columns[] = $row['Field'];
+}
+
+$columns = [];
+$result = $conn->query("SHOW COLUMNS FROM `tumeur`");
+$skipFirst = true; // Variable pour sauter la première colonne
+while ($row = $result->fetch_assoc()) {
+    if ($skipFirst) {
+        $skipFirst = false;
+        continue; // Passe à l'itération suivante sans ajouter cette colonne
+    }
     $columns[] = $row['Field'];
 }
 
@@ -111,7 +122,7 @@ if ($query) {
                 <div style="margin-top: 2rem; text-align: center;">
                     <h3>Nuage de points (Bénin vs Malin)</h3>
                     <form method="POST">
-                        <label for="varX" style="color: black;">Variable X :</label>
+                        <label for="varX" style="color: black;">Variable Y :</label>
                         <select name="varX">
                             <?php foreach ($columns as $col): ?>
                                 <option value="<?= $col ?>"><?= $col ?></option>
@@ -119,31 +130,29 @@ if ($query) {
                         </select>
                         <button type="submit">Générer le graphique</button>
                     </form>
-
+					<p>Ci-dessus, vous pouvez générer un nuage de points en choissant une variable Y pour visualiser les différents entre une tumeur bénigne et maligne.</p>
                     <?php
-                    // Si le formulaire a été soumis
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $varX = $_POST['varX'];
+						$varX = $_POST['varX'];
 
-                        // Requête B / M + la valeur
-                        $sql = "SELECT tumeur.$varX AS variable_x, diagnostic.libelle_diagnostic AS type_diagnostic
-                                FROM tumeur
-                                JOIN diagnostic ON tumeur.code_diagnostic = diagnostic.code_diagnostic";
-                        
-                        $res = $conn->query($sql);
-                        if (!$res) {
-                            die("Erreur SQL : " . $conn->error);
-                        }
+						// Récupérer les données avec les catégories B et M
+						$dataB = [];
+						$dataM = [];
+						$query = "SELECT `tumeur`.`$varX` AS variable_x, diagnostic.`libelle_diagnostic` AS type_diagnostic FROM `diagnostic`, `tumeur` WHERE `tumeur`.`code_diagnostic` = diagnostic.`code_diagnostic`";
+						$result = $conn->query($query);
 
-                        $dataB = [];
-                        $dataM = [];
-                        while ($row = $res->fetch_assoc()) {
-                            if ($row['type_diagnostic'] === 'B') {
-                                $dataB[] = ['x' => count($dataB)+1, 'y' => (float)$row['variable_x']];
-                            } elseif ($row['type_diagnostic'] === 'M') {
-                                $dataM[] = ['x' => count($dataM)+1, 'y' => (float)$row['variable_x']];
-                            }
-                        }
+						if (!$result) {
+							die("Erreur dans la requête SQL : " . $conn->error);
+						}
+
+						while ($row = $result->fetch_assoc()) {
+						// Vérification des valeurs B et M
+							if ($row['type_diagnostic'] === 'B') {
+								$dataB[] = ['x' => count($dataB) + 1, 'y' => (float)$row['variable_x']];
+							} elseif ($row['type_diagnostic'] === 'M') {
+								$dataM[] = ['x' => count($dataM) + 1, 'y' => (float)$row['variable_x']];
+							}
+						}
                         ?>
                         <!-- Canvas pour Chart.js -->
                         <canvas id="scatterChart" width="800" height="400"></canvas>
@@ -173,7 +182,7 @@ if ($query) {
                                         x: {
                                             title: {
                                                 display: true,
-                                                text: 'Index des points'
+                                                text: 'Tumeur'
                                             }
                                         },
                                         y: {
@@ -528,5 +537,5 @@ if ($query) {
   });
 </script>
 
-
+</body>
 </html>
