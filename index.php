@@ -1,53 +1,36 @@
 <?php
-// ========================
-// Paramètres de connexion 
-// ========================
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$dbname = "cancer";
-
-$conn = new mysqli($host, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connexion échouée : " . $conn->connect_error);
-}
-
-// Vérifier la table tumeur
-$table_check = $conn->query("SHOW TABLES LIKE 'tumeur'");
-if ($table_check->num_rows == 0) {
-    die("La table 'tumeur' n'existe pas dans la BDD 'cancer'.");
-}
-
+require_once "../getBd.php";
+$bdd = getBD();
 // Récupérer la liste des colonnes pour le <select>
 $columns = [];
-$resultCols = $conn->query("SHOW COLUMNS FROM tumeur");
-while ($row = $resultCols->fetch_assoc()) {
+$resultCols = $bdd->query("SHOW COLUMNS FROM tumeur");
+while ($row = $resultCols->fetch(PDO::FETCH_ASSOC)) {
     $columns[] = $row['Field'];
 }
 
 // --- SECTION 3 : Correction ici ---
-// On utilise la connexion mysqli ($conn), pas PDO ($bdd)
+// On utilise PDO ($bdd), donc tout est cohérent ici
 $caracteristiques = [];
 foreach ($columns as $field) {
     if ($field !== 'Id-tumeur') {
         $caracteristiques[] = $field;
     }
 }
-$query = $conn->query("SELECT tumeur.`Id-tumeur`, diagnostic.libelle_diagnostic 
+$query = $bdd->query("SELECT tumeur.`Id-tumeur`, diagnostic.libelle_diagnostic 
                        FROM tumeur 
                        JOIN diagnostic ON tumeur.code_diagnostic = diagnostic.code_diagnostic");
 
 $diagnostics = [];
 if ($query) {
-    while ($row = $query->fetch_assoc()) {
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         $diagnostics[] = $row;
     }
 } else {
-    die("Erreur SQL : " . $conn->error);
+    die("Erreur SQL : " . $bdd->error);
 }
 
 ?>
@@ -62,6 +45,27 @@ if ($query) {
     <!-- Feuille de style du template Stellar (modifiée avec nos ajouts) -->
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <style>
+    .graph-container {
+        opacity: 0;
+        transform: translateX(30px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        display: none;
+    }
+
+    .graph-container.show {
+        display: block;
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .graph-container.hide {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+</style>
+
 </head>
 <body class="is-preload">
 
@@ -105,49 +109,51 @@ if ($query) {
 </section>
 
 
-            <!-- Second Section (avec le graphe) -->
-            <section id="exploration" class="main special">
-                <!-- Formulaire pour choisir la variable X + Génération du scatter chart -->
-                <div style="margin-top: 2rem; text-align: center;">
-                    <h3>Nuage de points (Bénin vs Malin)</h3>
-                    <form method="POST">
-                        <label for="varX" style="color: black;">Variable X :</label>
-                        <select name="varX">
-                            <?php foreach ($columns as $col): ?>
-                                <option value="<?= $col ?>"><?= $col ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <button type="submit">Générer le graphique</button>
-                    </form>
+           <!-- Second Section (avec le graphe) -->
+           <section id="exploration" class="main special">
+    <!-- Formulaire pour choisir la variable X + Génération du scatter chart -->
+    <div style="margin-top: 2rem; text-align: center;">
+        <h3>Nuage de points (Bénin vs Malin)</h3>
+        <form method="POST">
+            <label for="varX" style="color: black;">Variable X :</label>
+            <select name="varX">
+                <?php foreach ($columns as $col): ?>
+                    <option value="<?= htmlspecialchars($col) ?>"><?= htmlspecialchars($col) ?></option>
+                <?php endforeach; ?>
+            </select>
+            <button type="submit">Générer le graphique</button>
+        </form>
 
-                    <?php
-                    // Si le formulaire a été soumis
-                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        $varX = $_POST['varX'];
+        <?php
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $varX = $_POST['varX'];
 
-                        // Requête B / M + la valeur
-                        $sql = "SELECT tumeur.$varX AS variable_x, diagnostic.libelle_diagnostic AS type_diagnostic
-                                FROM tumeur
-                                JOIN diagnostic ON tumeur.code_diagnostic = diagnostic.code_diagnostic";
-                        
-                        $res = $conn->query($sql);
-                        if (!$res) {
-                            die("Erreur SQL : " . $conn->error);
+            // Sécurise la variable
+            if (in_array($varX, $columns)) {
+                try {
+                    $sql = "SELECT tumeur.$varX AS variable_x, diagnostic.libelle_diagnostic AS type_diagnostic
+                            FROM tumeur
+                            JOIN diagnostic ON tumeur.code_diagnostic = diagnostic.code_diagnostic";
+                    $res = $bdd->query($sql);
+
+                    $dataB = [];
+                    $dataM = [];
+
+                    while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
+                        if ($row['type_diagnostic'] === 'B') {
+                            $dataB[] = ['x' => count($dataB) + 1, 'y' => (float)$row['variable_x']];
+                        } elseif ($row['type_diagnostic'] === 'M') {
+                            $dataM[] = ['x' => count($dataM) + 1, 'y' => (float)$row['variable_x']];
                         }
+                    }
+                } catch (PDOException $e) {
+                    echo "<p style='color:red;'>Erreur SQL : " . htmlspecialchars($e->getMessage()) . "</p>";
+                }
 
-                        $dataB = [];
-                        $dataM = [];
-                        while ($row = $res->fetch_assoc()) {
-                            if ($row['type_diagnostic'] === 'B') {
-                                $dataB[] = ['x' => count($dataB)+1, 'y' => (float)$row['variable_x']];
-                            } elseif ($row['type_diagnostic'] === 'M') {
-                                $dataM[] = ['x' => count($dataM)+1, 'y' => (float)$row['variable_x']];
-                            }
-                        }
-                        ?>
-                        <!-- Canvas pour Chart.js -->
+                if (!empty($dataB) || !empty($dataM)) {
+                    ?>
+                    <div style="margin-top: 2rem;">
                         <canvas id="scatterChart" width="800" height="400"></canvas>
-                        <!-- Chart.js -->
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <script>
                             const data = {
@@ -179,7 +185,7 @@ if ($query) {
                                         y: {
                                             title: {
                                                 display: true,
-                                                text: '<?= $varX ?>'
+                                                text: '<?= htmlspecialchars($varX) ?>'
                                             }
                                         }
                                     }
@@ -191,18 +197,89 @@ if ($query) {
                                 config
                             );
                         </script>
-                        <?php
-                    } // fin if POST
-                    ?>
-                </div>
-                <!-- Fin du scatter chart -->
+                    </div>
+                    <?php
+                } else {
+                    echo "<p style='color:orange;'>Aucune donnée à afficher.</p>";
+                }
+            } else {
+                echo "<p style='color:red;'>Variable X invalide.</p>";
+            }
+        }
+        ?>
+    </div>
 
-                <footer class="major">
-                    <ul class="actions special">
-                        <li><a href="" class="button">EN savoir plus</a></li>
-                    </ul>
-                </footer>
-            </section>
+    <!-- Graphes HTML interactifs -->
+    <div style="text-align: center; margin-top: 2rem;">
+        <h3>Visualisation des graphiques</h3>
+        <div style="margin-bottom: 1rem;">
+            <button onclick="showGraph('graph1')">Graphe 1</button>
+            <button onclick="showGraph('graph2')">Graphe 2</button>
+            <button onclick="showGraph('graph3')">Graphe 3</button>
+            <button onclick="showGraph('graph4')">Graphe 4</button>
+            <button onclick="showGraph('graph5')">Graphe 5</button>
+        </div>
+
+        <div id="graph1" class="graph-container" style="display: none;">
+            <?= file_get_contents("graphe/graph_tumeurs.html"); ?>
+        </div>
+        <div id="graph2" class="graph-container" style="display: none;">
+            <?= file_get_contents("graphe/heatmap_interactive.html"); ?>
+        </div>
+        <div id="graph3" class="graph-container" style="display: none;">
+            <?= file_get_contents("graphe/pca_kde_beautiful.html"); ?>
+        </div>
+        <div id="graph4" class="graph-container" style="display: none;">
+            <?= file_get_contents("graphe/voronoi_diagram.html"); ?>
+        </div>
+        <div id="graph5" class="graph-container" style="display: none;">
+            <?= file_get_contents("graphe/frontieres_decision.html"); ?> <?= file_get_contents("graphe/frontieres_decision_mlp.html"); ?>
+        </div>
+    </div>
+
+
+<script>
+    function showGraph(id) {
+        // Cacher les autres graphiques avec animation
+        document.querySelectorAll('.graph-container').forEach(div => {
+            if (div.id !== id && div.classList.contains('show')) {
+                div.classList.remove('show');
+                div.classList.add('hide');
+                // Attendre la fin de l’animation avant de cacher
+                setTimeout(() => {
+                    div.style.display = 'none';
+                }, 500);
+            }
+        });
+
+        const selectedGraph = document.getElementById(id);
+        if (selectedGraph.classList.contains('show')) return; // déjà visible
+
+        selectedGraph.classList.remove('hide');
+        selectedGraph.style.display = 'block';
+
+        // Attendre une frame pour déclencher la transition
+        setTimeout(() => {
+            selectedGraph.classList.add('show');
+        }, 10);
+    }
+
+    // Afficher le 1er graphe au chargement
+    window.onload = () => showGraph('graph1');
+</script>
+
+
+
+
+
+    <footer class="major" style="margin-top: 2rem;">
+        <ul class="actions special">
+            <li><a href="#" class="button">En savoir plus</a></li>
+        </ul>
+    </footer>
+</section>
+
+
 <!-- Section 3 : Analyse sans image -->
 <section class="wave-analyse-fullwidth" id="analyse">
   <div class="analyse-container">
@@ -249,6 +326,7 @@ if ($query) {
       <!-- Liste scrollable -->
       <div class="checkbox-scroll" style="max-height: 220px; overflow-y: auto; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
         <ul style="list-style: none; padding: 0;">
+        <li><a href="tumeurVisu2.php">Insérer vos données</a></li>
           <?php foreach ($diagnostics as $diagnostic): ?>
             <li style="margin-bottom: 0.5rem;">
               <a href="tumeurVisu.php?Id-tumeur=<?= urlencode($diagnostic['Id-tumeur']); ?>" style="color: #fff; text-decoration: underline;">

@@ -1,5 +1,5 @@
 <?php
-require "getBd.php";
+require "../getBd.php";
 $bdd = getBD();
 session_start();
 
@@ -84,6 +84,7 @@ $diagnostics = $query->fetchAll(PDO::FETCH_ASSOC);
 
           <div class="scrollable-list">
             <div class="actions-list" id="id-list">
+            <li><a href="tumeurVisu2.php">Insérer vos données</a></li>
               <?php foreach ($diagnostics as $diagnostic): ?>
                 <a class="button small" href="tumeurVisu.php?Id-tumeur=<?php echo urlencode($diagnostic['Id-tumeur']); ?>">
                   <?= htmlspecialchars($diagnostic['Id-tumeur']) ?> - <?= htmlspecialchars($diagnostic['libelle_diagnostic']) ?>
@@ -130,7 +131,7 @@ $diagnostics = $query->fetchAll(PDO::FETCH_ASSOC);
               file_put_contents($tempFile, json_encode($tumeurData, JSON_PRETTY_PRINT));
 
               $python = 'C:/Users/mayss/AppData/Local/Programs/Python/Python313/python.exe';
-              $script = 'C:/MAMP/htdocs/GestionP/Test-template/testvisu.py';
+              $script = 'C:/MAMP/htdocs/GestionP/mon_projet/python/testvisu.py';
               $command = "$python $script 2>&1";
               shell_exec($command);
 

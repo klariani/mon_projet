@@ -1,5 +1,5 @@
 <?php
-require "./getBd.php";
+require "../getBd.php";
 $bdd = getBD();
 session_start();
 
