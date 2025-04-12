@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
 import joblib
 
 # Charger les données
-df = pd.read_csv("C:/MAMP/htdocs/GestionP/mon_projet/testPrediction.csv")
+df = pd.read_csv("./csv/testPrediction.csv")
 
 # Préparation des données
 X = df.drop(columns=["y"])
