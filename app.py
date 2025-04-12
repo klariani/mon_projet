@@ -119,7 +119,9 @@ def predict():
 
         save_prediction_history(filename, classe_predite, confiance)
 
-        image_url = f'http://localhost:5000/static/uploads/{filename}'
+        # Permettra à l'URL de fonctionner sur Render ou en local
+        request_host = request.host_url.rstrip('/')
+        image_url = f'{request_host}/static/uploads/{filename}'
 
         return jsonify({
             'classe': classe_predite,
