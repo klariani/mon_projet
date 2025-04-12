@@ -1,0 +1,14 @@
+# Utiliser l'image PHP avec Apache
+FROM php:7.4-apache
+
+# Copier les fichiers du projet dans le dossier où Apache les servira
+COPY . /var/www/html/
+
+# Activer le module de réécriture d'Apache (utile pour les URL clean, comme .htaccess)
+RUN a2enmod rewrite
+
+# Exposer le port 80, qui est celui qu'Apache utilise par défaut
+EXPOSE 80
+
+# Démarrer Apache en avant-plan (pour que le conteneur ne s'arrête pas)
+CMD ["apache2-foreground"]
