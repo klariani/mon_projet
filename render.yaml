@@ -1,4 +1,3 @@
-# Exported from Render on 2025-04-12T09:36:37Z
 services:
   - type: web
     name: oncoanalyse-php
