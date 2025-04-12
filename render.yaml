@@ -1,0 +1,27 @@
+# Exported from Render on 2025-04-12T09:36:37Z
+services:
+  - type: web
+    name: oncoanalyse-php
+    runtime: php
+    repo: https://github.com/klariani/mon_projet
+    branch: predVisual
+    plan: free
+    region: oregon
+    buildCommand: "echo 'No build step needed for PHP'"
+    startCommand: "apache2-foreground"
+    envVars:
+      - key: PHP_ENV
+        value: production
+
+  - type: web
+    name: oncoanalyse-python
+    runtime: python
+    repo: https://github.com/klariani/mon_projet
+    branch: predVisual
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn neutralNetworks:app --reload --host 0.0.0.0 --port 8000
+    envVars:
+      - key: PYTHON_ENV
+        value: production
